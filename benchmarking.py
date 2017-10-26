@@ -7,7 +7,7 @@ import time
 from utils import random_list
 
 
-def benchmarking(sort_func):
+def benchmarking(sort_func, steps):
 	benchmark_times = []
 	n_list = []
 
@@ -16,7 +16,7 @@ def benchmarking(sort_func):
 	#	n = 1000*(i+1)
 
 	tic = time.clock()
-	for i in tqdm(xrange(150)):
+	for i in tqdm(xrange(steps)):
 		n = 1000*(i+1)
 		unsorted_list = random_list(n,n)
 		tic2 = time.clock()
@@ -27,14 +27,23 @@ def benchmarking(sort_func):
 	return n_list, benchmark_times
 
 
-n_list, benchmark_times = benchmarking(sorted)
 
 plt.figure()
 ax = plt.gca()
 ax.set_xlim([0,160000])
 ax.set_ylim([0,1.5])
-plt.title('Python Built-in Sort')
-plt.plot(n_list, benchmark_times)
+plt.title('Benchmarking Sorting Algorithms')
+
+n_list, benchmark_times = benchmarking(sorted, 150)
+ax.plot(n_list, benchmark_times, label='sorted')
+
+n_list, benchmark_times = benchmarking(insertion_sort, 15)
+ax.plot(n_list, benchmark_times, label='insertion')
+
+n_list, benchmark_times = benchmarking(merge_sort, 150)
+ax.plot(n_list, benchmark_times, label='merge')
+
+ax.legend(loc='upper right', shadow=True)
 plt.savefig('./doc/built_in_sort.png', bbox_inches='tight')
 plt.show()
 
