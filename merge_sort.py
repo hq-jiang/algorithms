@@ -1,9 +1,12 @@
-import random
 from tqdm import tqdm
-from utils import test_sort
+from utils import test_sort, random_list
 
 
 def merge_sort(unsorted):
+	'''
+	Basic sorting algorithm
+	Time complexity: n*log(n)
+	'''
 	n = len(unsorted)
 	if n <= 1:
 		return unsorted
@@ -31,7 +34,7 @@ def merge_sort(unsorted):
 
 if __name__ == "__main__":
 	n = 100000
-	unsorted_list = [random.randint(0, 1000) for i in range(n)]
+	unsorted_list = random_list(n,1000)
 
 	sorted_list = merge_sort(unsorted_list)
 	test_sort(sorted_list)
