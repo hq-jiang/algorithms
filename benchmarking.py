@@ -44,6 +44,6 @@ n_list, benchmark_times = benchmarking(merge_sort, 150)
 ax.plot(n_list, benchmark_times, label='merge')
 
 ax.legend(loc='upper right', shadow=True)
-plt.savefig('./doc/built_in_sort.png', bbox_inches='tight')
+plt.savefig('./doc/benchmarking.png', bbox_inches='tight')
 plt.show()
 
