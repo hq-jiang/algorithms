@@ -1,6 +1,13 @@
 ## Basic Algorithms in Python
 
-### Merge Sort
+
+### Benchmarks
+
+<img src="./doc/benchmarking.png" width="500">
+
+#### Merge Sort:  
 O[n*log(n)]
-  
-<img src="./doc/merge_sort.png" width="500px">
+
+#### Insertion Sort:  
+Worst case: O[n^2]  
+Best case: O[n]
