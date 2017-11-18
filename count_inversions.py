@@ -30,19 +30,19 @@ def count_inversions(numbers):
     n = len(numbers)
 
     if n==1:
-        return 0, numbers
+        return 0, numbers, []
 
     # Divide
     a = numbers[:n//2]
     b = numbers[n//2:]
     
     # Conquer
-    count_a, merged_a= count_inversions(a)
-    count_b, merged_b= count_inversions(b)
+    count_a, merged_a, inv_a= count_inversions(a)
+    count_b, merged_b, inv_b= count_inversions(b)
 
     ### Combine
     count = count_a + count_b
-    #inversions = inv_a + inv_b
+    inversions = inv_a + inv_b
 
     i_a=0
     i_b=0
@@ -57,31 +57,32 @@ def count_inversions(numbers):
             merged.append(merged_a[i_a])
             i_a+=1
 
-        elif merged_a[i_a] < merged_b[i_b]:
+        elif merged_a[i_a] <= merged_b[i_b]:
             merged.append(merged_a[i_a])
             i_a += 1
     
         elif merged_a[i_a] > merged_b[i_b] :
             merged.append(merged_b[i_b])
             for j in merged_a[i_a:]:
-                #inversions.append((j, merged_b[i_b])) 
+                inversions.append((j, merged_b[i_b])) 
                 count += 1
             i_b += 1
         
-    return count, merged
+    return count, merged, inversions
 
 if __name__=='__main__':
     numbers = read_file('count_inversions.txt')
-    #numbers = [11,10,16,1,3,2,5,4,6,9,8,13,12]
-    #count, sorted_list = count_inversions(numbers)
-    #print 'Number of inversions', count
-    #print sorted_list
+    numbers = [20,2,5,4,6,9,8,13,12]
+    count, sorted_list, inversions = count_inversions(numbers)
+    print inversions
+    print 'Number of inversions', count
+    print sorted_list
     
-    plt.figure()
-    ax = plt.gca()
-    plt.title('Benchmarking Sorting Algorithms')
+    #plt.figure()
+    #ax = plt.gca()
+    #plt.title('Benchmarking Sorting Algorithms')
 
-    n_list, benchmark_times = benchmarking(count_inversions, numbers)
-    ax.plot(n_list, benchmark_times, label='sorted')
-    plt.savefig('./doc/count_inversions.png', bbox_inches='tight')
-    plt.show()
+    #n_list, benchmark_times = benchmarking(count_inversions, numbers)
+    #ax.plot(n_list, benchmark_times, label='sorted')
+    #plt.savefig('./doc/count_inversions.png', bbox_inches='tight')
+    #plt.show()
