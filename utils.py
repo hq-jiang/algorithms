@@ -13,3 +13,13 @@ def test_sort(sorted_list):
 
 def random_list(n, rng):
 	return [random.randint(0, rng) for i in range(n)]
+
+def read_file(file_path):
+    with open(file_path) as f:
+        lines = f.readlines()
+
+        lines = [int(line.strip('\r\n')) for line in lines]
+        assert type(lines[0])==int
+        assert len(lines)==100000
+
+        return lines
