@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from tqdm import tqdm
 np.set_printoptions(threshold=np.inf)
@@ -18,7 +19,8 @@ class Graph:
         with open(path, 'r') as f:
             lines = f.readlines()
             self.num_vertices = len(lines)
-            self.adjacency_matrix = np.zeros([self.num_vertices, self.num_vertices], dtype=np.int32)
+            self.adjacency_matrix = np.zeros(
+                [self.num_vertices, self.num_vertices], dtype=np.int32)
             print("Number of vertices", self.num_vertices)
             for vertex_id, line in enumerate(lines):
                 adjacent_vertices = [int(elem)-1 for elem in line.split()]
@@ -28,10 +30,12 @@ class Graph:
             print("Number of edges", self.num_edges)
 
     def test_integrity(self):
-        #print("Trace of adjacency_matrix", np.trace(self.adjacency_matrix))
-        assert(np.trace(self.adjacency_matrix) == 0)
-        assert(np.all(self.adjacency_matrix < 2))
-        assert(np.array_equal(self.adjacency_matrix, self.adjacency_matrix.T))
+        assert np.trace(self.adjacency_matrix) == 0, \
+            "Self loops found in graph"
+        assert np.all(self.adjacency_matrix < 2), \
+            "Multiple connections between vertices"
+        assert np.array_equal(self.adjacency_matrix, self.adjacency_matrix.T), \
+            "Adjacency matrix not symmetric, graph is not undirected"
 
     def generate_test_graph(self):
         self.adjacency_matrix = np.array([
@@ -45,8 +49,11 @@ class Graph:
     def karger_min_cut(self, iterations=10):
         min_cut = self.karger_min_cut_once()
         for i in tqdm(range(iterations-1)):
-            min_cut = min(self.karger_min_cut_once(), min_cut)
-            print("Current min cut", min_cut)
+            min_cut_new = min(self.karger_min_cut_once(), min_cut)
+            if min_cut_new < min_cut:
+                print("Current min cut", min_cut)
+                min_cut = min_cut_new
+
         return min_cut
 
     def karger_min_cut_once(self):
@@ -81,7 +88,12 @@ class Graph:
 
 if __name__=="__main__":
     graph = Graph()
-    graph.parse_txt("./kargerMinCut.txt")
+    # graph.parse_txt("./kargerMinCut.txt")
+    graph.generate_test_graph()
     graph.test_integrity()
     print("Calculating min cut")
-    print(graph.karger_min_cut(200000))
+    # Number of iterations for 1/n success probability
+    n = graph.adjacency_matrix.shape[0]
+    iterations = int(n * n * math.log(n))
+    print("Number of iterations", iterations)
+    print("Final min cut", graph.karger_min_cut(iterations))
