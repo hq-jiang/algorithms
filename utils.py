@@ -6,9 +6,9 @@ def test_sort(sorted_list):
 		if i >= prev:
 			prev = i
 		else:
-			print 'Sorting list failed'
+			print('Sorting list failed at entry', i)
 			return False
-	print 'Sorting list successful'
+	print('Sorting list successful')
 	return True
 
 def random_list(n, rng):
@@ -20,6 +20,6 @@ def read_file(file_path):
 
         lines = [int(line.strip('\r\n')) for line in lines]
         assert type(lines[0])==int
-        assert len(lines)==100000
+        #assert len(lines)==100000
 
         return lines
